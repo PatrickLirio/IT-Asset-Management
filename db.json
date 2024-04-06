@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "fname": "Patrick Benedict",
+      "lname": "Lirio",
+      "username": "pakyuka123",
+      "position": "dogstyle",
+      "employeeId": "696969",
+      "department": "pornhub",
+      "email": "pbenedict.lirio@gmail.com",
+      "password": "Tanginamoka$123",
+      "cpassword": "Tanginamoka$123"
+    },
+    {
+      "id": 4,
+      "fname": "Patrick Benedict",
+      "lname": "Lirio",
+      "username": "pakyuka123",
+      "position": "dogstyle",
+      "employeeId": "696969",
+      "department": "pornhub",
+      "email": "pbenedict.lirio@gmail.com",
+      "password": "Tanginamoka$123",
+      "cpassword": "Tanginamoka$123"
+    },
+    {
+      "id": 5,
+      "fname": "Patrick Benedict",
+      "lname": "Lirio",
+      "username": "pakyuka123",
+      "position": "dogstyle",
+      "employeeId": "696969",
+      "department": "pornhub",
+      "email": "pbenedict.lirio@gmail.com",
+      "password": "Tanginamoka$123",
+      "cpassword": "Tanginamoka$123"
+    },
+    {
+      "id": 1,
+      "fname": "james",
+      "lname": "Lirio",
+      "username": "jamesa",
+      "position": "project manager",
+      "employeeId": "4321",
+      "department": "IT",
+      "email": "jamesa.lirio@gmail.com",
+      "password": "Pakyuka@123",
+      "cpassword": "Pakyuka@123"
+    }
+  ]
+}
