@@ -10,11 +10,10 @@ module.exports = async (title, date) => {
         throw new Error('Date is required.');
     }
 
-    // Convert the date to a numerical format (e.g., Unix timestamp)
-    const numericDate = new Date(date).getTime(); // Unix timestamp in milliseconds
-
-    if (isNaN(numericDate)) {
-        throw new Error('Invalid date format.');
+    // Ensure the date is in the correct format
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(date)) {
+        throw new Error('Invalid date format. Use YYYY-MM-DD.');
     }
 
     try {
@@ -24,8 +23,8 @@ module.exports = async (title, date) => {
         `;
         
         const params = {
-            title,
-            date: numericDate // Use the converted numerical date
+            title: { type: 'NVarChar', value: title },
+            date: { type: 'Date', value: date } // Use the date directly in YYYY-MM-DD format
         };
         
         await Connection(query, params);

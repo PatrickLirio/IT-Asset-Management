@@ -13,12 +13,14 @@ const RetrieveServices = require('../Services/Retrieve');
 const RetrieveServices2 = require('../Services/Retrieve2');
 const getTotalAssets  = require('../Services/RetrieveT');
 const getTotalOperationalAssets = require('../Services/RetrieveA');
+const retrieveEvents = require ('../Services/RetrieveEvent')
 
 const UpdateServices = require('../Services/Update');
 const UpdateUserServices = require('../Services/UpdateUserInfo');
 
 const DeleteServices = require('../Services/Delete');
 const DeleteUserServices = require('../Services/DeleteUserInfo');
+const DeleteEventServices = require('../Services/DeleteEvent')
 // const { executeQuery } = require('../database/Connection');
 
 
@@ -81,6 +83,7 @@ router.post('/create/event', async (req, res) => {
 
 
 /*-----------------------Retrieving ---------------*/
+//TO RETRIEVE THE USERS LIST
 router.get (`/user`, async (req, res) => {
     const {arrfields } = req.query;
 
@@ -100,6 +103,7 @@ router.get (`/user`, async (req, res) => {
     }
 });
 
+// TO RETRIEVE THE ASSETS LIST 
 router.get (`/asset`, async (req, res) => {
     const {assetfields } = req.query;
 
@@ -140,7 +144,15 @@ router.get('/total-operational-assets', async (req, res) => {
     }
 });
 
-
+//TO RETRIEVE THE EVENTS CREATED
+router.get('/retrieve/events', async (req, res) => {
+    try {
+        const events = await retrieveEvents();
+        res.status(200).send(events);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+});
 
 /*----------------------- Retrieving ---------------*/
 
@@ -298,6 +310,22 @@ router.delete('/delete/user/:id', async (req, res) => {
     } catch (error) {
         console.error('Error deleting asset:', error);
         res.status(500).send({ message: "An error occurred while deleting the asset." });
+    }
+});
+
+//event
+router.delete('/delete/event/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await DeleteEventServices(id);
+        if (result) {
+            res.status(200).send({ message: "Successfully Deleted!" });
+        } else {
+            res.status(500).send({ message: "Not Deleted!" });
+        }
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).send({ message: "An error occurred while deleting the event." });
     }
 });
 
