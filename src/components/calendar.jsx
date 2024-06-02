@@ -12,14 +12,6 @@ import {
   ListItemText,
   Typography,
   useTheme,
-  Snackbar,
-  Alert,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button
 } from "@mui/material";
 import { tokens } from "../theme";
 
@@ -27,33 +19,20 @@ const Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [currentEvents, setCurrentEvents] = useState([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await fetch('http://localhost:8000/accounts/retrieve/events');
-        if (response.ok) {
-          const events = await response.json();
-          setCurrentEvents(events);
-        } else {
-          const errorData = await response.json();
-          setSnackbarMessage(`Failed to fetch events: ${errorData.message}`);
-          setSnackbarSeverity('error');
-          setSnackbarOpen(true);
-        }
+        const data = await response.json();
+        const events = data.map(event => ({
+          id: event.id,
+          title: event.title,
+          start: event.date,
+        }));
+        setCurrentEvents(events);
       } catch (error) {
-        setSnackbarMessage(`Failed to fetch events: ${error.message}`);
-        setSnackbarSeverity('error');
-        setSnackbarOpen(true);
+        console.error('Error fetching events:', error);
       }
     };
 
@@ -66,9 +45,8 @@ const Calendar = () => {
     calendarApi.unselect();
 
     if (title) {
-      const id = `${selected.dateStr}-${title}`;
-      const event = {
-        id,
+      const newEvent = {
+        id: `${selected.dateStr}-${title}`,
         title,
         start: selected.startStr,
         end: selected.endStr,
@@ -82,69 +60,46 @@ const Calendar = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            id: event.id,
-            title: event.title,
-            date: event.start,
+            title: newEvent.title,
+            date: newEvent.start,
           }),
         });
 
         if (response.ok) {
-          calendarApi.addEvent(event);
-          setCurrentEvents((prevEvents) => [...prevEvents, event]);
-          setSnackbarMessage('Event inserted successfully');
-          setSnackbarSeverity('success');
+          calendarApi.addEvent(newEvent);
+          setCurrentEvents(prevEvents => [...prevEvents, newEvent]);
+          alert('Event successfully created');
         } else {
-          const errorData = await response.json();
-          setSnackbarMessage(`Failed to create event: ${errorData.message}`);
-          setSnackbarSeverity('error');
+          alert('Failed to create event');
         }
       } catch (error) {
-        setSnackbarMessage(`Failed to create event: ${error.message}`);
-        setSnackbarSeverity('error');
-      } finally {
-        setSnackbarOpen(true);
+        console.error('Error:', error);
+        alert('Failed to create event');
       }
     }
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEvent(event);
-    setDeleteDialogOpen(true);
-  };
+  const handleEventClick = async (selected) => {
+    const eventId = selected.event.id;
 
-  const handleDeleteConfirm = async () => {
-    if (selectedEvent) {
+    if (window.confirm(`Are you sure you want to delete the event '${selected.event.title}'`)) {
       try {
-        const response = await fetch(`http://localhost:8000/accounts/delete/event/${selectedEvent.id}`, {
+        const response = await fetch(`http://localhost:8000/accounts/delete/event/${eventId}`, {
           method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
         });
 
         if (response.ok) {
-          setCurrentEvents((prevEvents) => prevEvents.filter((event) => event.id !== selectedEvent.id));
-          setSnackbarMessage('Event deleted successfully');
-          setSnackbarSeverity('success');
+          selected.event.remove();
+          setCurrentEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+          alert('Event successfully deleted');
         } else {
-          const errorData = await response.json();
-          setSnackbarMessage(`Failed to delete event: ${errorData.message}`);
-          setSnackbarSeverity('error');
+          alert('Failed to delete event');
         }
       } catch (error) {
-        setSnackbarMessage(`Failed to delete event: ${error.message}`);
-        setSnackbarSeverity('error');
-      } finally {
-        setSnackbarOpen(true);
-        setDeleteDialogOpen(false);
-        setSelectedEvent(null);
+        console.error('Error:', error);
+        alert('Failed to delete event');
       }
     }
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteDialogOpen(false);
-    setSelectedEvent(null);
   };
 
   return (
@@ -153,7 +108,7 @@ const Calendar = () => {
         {/* CALENDAR SIDEBAR */}
         <Box
           flex="1 1 20%"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={colors.primary[700]}
           p="15px"
           borderRadius="4px"
         >
@@ -162,10 +117,8 @@ const Calendar = () => {
             {currentEvents.map((event) => (
               <ListItem
                 key={event.id}
-                button
-                onClick={() => handleEventClick(event)}
                 sx={{
-                  backgroundColor: colors.greenAccent[500],
+                  backgroundColor: colors.greenAccent[600],
                   margin: "10px 0",
                   borderRadius: "2px",
                 }}
@@ -208,43 +161,24 @@ const Calendar = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={handleDateClick}
-            eventClick={(e) => handleEventClick(e.event)}
-            eventsSet={(events) => setCurrentEvents(events)}
+            eventClick={handleEventClick}
+            events={currentEvents} // Use currentEvents for dynamic events
+            eventContent={(eventInfo) => (
+              <div
+                style={{
+                  backgroundColor: '#3498db',
+                  color: 'white',
+                  borderRadius: '5px',
+                  padding: '2px 5px',
+                  fontSize: '12px',
+                }}
+              >
+                {eventInfo.event.title}
+              </div>
+            )}
           />
         </Box>
       </Box>
-
-      {/* Snackbar for feedback */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-      >
-        <DialogTitle>Delete Event</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the event '{selectedEvent?.title}'?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDeleteConfirm} color="primary" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };
