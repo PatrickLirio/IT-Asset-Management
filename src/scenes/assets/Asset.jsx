@@ -1,99 +1,67 @@
-import { Box } from "@mui/material";
-import  Button from '@mui/material/Button';
-import Header from "../../components/Header";
-
-import Table from "./Table";
+import { Box, Button, Stack } from "@mui/material";
 import { useState } from 'react';
-import { Stack, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { tokens } from "../../theme";
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/AddBox';
-import AssignIcon from '@mui/icons-material/AssignmentInd';
-
+import CreateAsset from "./CreateAsset";
+import Update from "../../components/updateForm";
+import Deletion from "../../components/deleteForm";
 
 const Assets = () => {
-    
-    return (
-    
-    <Box mb="10px" padding="10px">
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title = "Assets" subtitle = "Welcome to your dashboard"/>
-        </Box> 
-        {/* <Box display="flex" justifyContent="center" alignItems="center">
-             <h3
-               onClick={() => setView("basic")}
-               style={{ color: view === "basic" ? "#fff" : "" }}
-             >
-               Assign Asset
-             </h3>
-             <h3
-               onClick={() => setView("advanced")}
-               style={{ color: view === "advanced" ? "#fff" : "" }}
-             >
-               Advanced
-             </h3>
-   
-      
-        </Box>    */}
-        {/* {view === "basic" ? <BasicForm /> : <AdvancedForm />} */}
-    </Box>
-    );
-};
-const HeaderButtons = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [view, setView] = useState("basic");
-    // const [expand, setExpand] = useState(false);
-    // const toggleExpand = () => setExpand(prevExpand => !prevExpand);
-    
+
+    // Define state to manage the view
+    const [view, setView] = useState("Create Asset");
+
     return (
-        <Stack direction="row" spacing={2}>
-            <Button 
-                variant="contained"
-                size="large" 
-                sx={{ 
-                    backgroundColor: colors.redAccent[500],
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '100%', // Set the width to make buttons uniform
-                }}
-            > 
-                <VisibilityIcon /> 
-                Assign Asset
-            </Button>
-            <Button 
-                variant="contained"
-                size="large" 
-                // onClick={toggleExpand}
-                onClick={() => setView("Return Asset")}
-                sx={{ 
-                    backgroundColor: colors.redAccent[500],
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '100%', // Set the width to make buttons uniform
-                }}
-            > 
-                <AddIcon/> 
-                Return Asset 
-                
-            </Button>
-            <Button 
-                variant="contained"
-                size="large"
-                sx={{ 
-                    backgroundColor: colors.redAccent[500],
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '100%', // Set the width to make buttons uniform
-                }}
-            > 
-                <AssignIcon /> 
-                Report Asset
-            </Button>
-        </Stack>
+        <Box mb="10px" padding="10px">
+            {/* Buttons */}
+            <Box display="flex" justifyContent="center">
+                <Stack direction="row" spacing={2}>
+                    <Button 
+                        variant="contained"
+                        size="large" 
+                        startIcon={<AddIcon />} 
+                        onClick={() => setView("Create Asset")}
+                        sx={{ 
+                            backgroundColor: view === "Create Asset" ? colors.redAccent[700] : colors.redAccent[500],
+                            width: '200px',
+                        }}
+                    > 
+                        Create 
+                    </Button>
+                    <Button 
+                        variant="contained" 
+                        size="large"
+                        onClick={() => setView("Update Asset")} 
+                        sx={{ 
+                            backgroundColor: view === "Update Asset" ? colors.redAccent[700] : colors.redAccent[500],
+                            width: '200px',
+                        }}
+                    >
+                        Update 
+                    </Button>
+                    <Button 
+                        variant="contained" 
+                        size="large"
+                        onClick={() => setView("Delete Asset")} 
+                        sx={{ 
+                            backgroundColor: view === "Delete Asset" ? colors.redAccent[700] : colors.redAccent[500],
+                            width: '200px',
+                        }}
+                    >
+                        Delete
+                    </Button>
+                </Stack>
+            </Box>
+            {/* Display the selected view */}
+            {view && (
+                <Box mt={2}>
+                    {view === "Create Asset" ? <CreateAsset /> : view === "Update Asset" ? <Update /> : <Deletion />}
+                </Box>
+            )}
+        </Box>
     );
 }; 
 

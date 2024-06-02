@@ -6,7 +6,7 @@ export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
         grey: {
-          100: "#e0e0e0",
+          100: "#e0e0e0", // Lightest
           200: "#c2c2c2",
           300: "#a3a3a3",
           400: "#858585",
@@ -14,7 +14,7 @@ export const tokens = (mode) => ({
           600: "#525252",
           700: "#3d3d3d",
           800: "#292929",
-          900: "#141414",
+          900: "#141414", // Darkest
         },
         primary: {
           100: "#d0d1d5",
@@ -63,15 +63,15 @@ export const tokens = (mode) => ({
       }
     : {
         grey: {
-          100: "#141414",
-          200: "#292929",
-          300: "#3d3d3d",
-          400: "#525252",
+          100: "#e0e0e0", // Lightest
+          200: "#c2c2c2",
+          300: "#a3a3a3",
+          400: "#858585",
           500: "#666666",
-          600: "#858585",
-          700: "#a3a3a3",
-          800: "#c2c2c2",
-          900: "#e0e0e0",
+          600: "#525252",
+          700: "#3d3d3d",
+          800: "#292929",
+          900: "#141414", // Darkest
         },
         primary: {
           100: "#040509",
@@ -131,18 +131,18 @@ export const themeSettings = (mode) => {
         ? {
             // palette values for dark mode
             primary: {
-              main: colors.primary[500],
+              main: colors.primary[900], //background
             },
             secondary: {
               main: colors.greenAccent[500],
             },
             neutral: {
               dark: colors.grey[700],
-              main: colors.grey[500],
+              main: colors.grey[100],
               light: colors.grey[100],
             },
             background: {
-              default: colors.primary[500],
+              default: colors.primary[900],
             },
           }
         : {
@@ -165,17 +165,19 @@ export const themeSettings = (mode) => {
     },
     typography: {
       fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-      fontSize: 12,
+      fontSize: 15,
       h1: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
         fontSize: 60,
       },
       h2: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+        
         fontSize: 38,
       },
       h3: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+        
         fontSize: 44,
       },
       h4: {
@@ -183,12 +185,13 @@ export const themeSettings = (mode) => {
         fontSize: 40,
       },
       h5: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
+        fontFamily: ["Source Sans Pro", "sans-serif"].join(","), 
+        
         fontSize: 26,
       },
       h6: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 24,
+        fontSize: 15,
       },
     },
   };

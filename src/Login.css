@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh; 
+    font-family: Arial;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* Make container cover entire body height */
+    width: 100%;
+}
+
+.left-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%; /* Adjusted width */
+    background-color: #fff;
+    color: #000;
+    padding: 10px;
+}
+
+.left-side .logo {
+    width: 80%;
+    height: auto;
+    display: block;
+    margin: 20px auto; /* Center the logo */
+}
+
+.left-side p {
+    color: #000; /* Black text */
+    text-align: center; /* Centered text */
+    font-size: 24px; /* Large font size */
+    line-height: 1.5; /* Space between lines of text */
+    font-weight: 600; /* Bold text */
+    margin-top: -80px; /* Reduce space above the paragraph text */
+}
+
+
+.right-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    background-color: #e60707; /* black background */
+}
+
+.right-side .botlogo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block; /* Ensure the logo is displayed as a block element */
+    margin-left: auto; /* Center horizontally by setting left and right margins to auto */
+    margin-right: auto;
+}
+
+.login-form {
+    width: 50%;
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 3em;
+    font-weight: 600;
+    
+}
+
+
+.login-form .form-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.10rem;
+    border-radius: 25px;
+    padding: 0.8rem;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #535151;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5); /* Adds a silver line as bottom border */
+    width: 350px;
+    
+}
+
+.login-form .form-label {
+    
+    font-size: 20px;
+    color: #f2eaea;
+   
+}
+
+input[type="email"], input[type="password"] {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 20px;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 1em;
+}
+
+.login-form .text-danger {
+    color: #ff0000;
+    margin-top: 10px;
+    
+    font-size: 12px;
+}
+
+.login-form .Button { 
+    text-align: center;
+    margin-top: 30px;
+}
+
+.login-form .btn {
+    background-color: white;
+    color: #e60000;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-form .btn:hover {
+    background-color: #05b40b; /* Black background on hover */
+    color: #fff; /* White text on hover */
+}

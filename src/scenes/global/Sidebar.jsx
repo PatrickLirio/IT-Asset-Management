@@ -1,15 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Box, IconButton, Typography, useTheme, Divider } from "@mui/material";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import Inventory2Icon from '@mui/icons-material/Inventory2';
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -18,9 +18,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   return (
     <MenuItem
       active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
+      style={{ color: colors.grey[100] }}
       onClick={() => setSelected(title)}
       icon={icon}
     >
@@ -34,32 +32,40 @@ const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState("Home");
+
+
+  const handleLogout = () => {
+    // // Perform logout logic here
+    // console.log("Logout clicked");
+    // // Clear any authentication tokens or local storage
+    // localStorage.removeItem('is_authenticated');
+    // // Redirect to the login page
+    // navigate({</Login>});
+  };
 
   return (
     <Box
       sx={{
+        height: "100vh",
         "& .pro-sidebar-inner": {
-          background: `${colors.redAccent[500]} !important`,
+          background: theme.palette.mode === "dark"
+            ? `${colors.redAccent[500]} !important`
+            : `${colors.primary[300]} !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
-          
         },
         "& .pro-inner-item": {
-          padding: "20px 30px 5px 20px !important",
+          padding: "15px 20px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
           color: "#868dfb !important",
-        
-          
         },
-        "& .pro-menu-item.active": { // hover/ seletor
+        "& .pro-menu-item.active": {
           color: "#6870fa !important",
-          padding: "5px 10px 5px 5px !important",
-          border: "1px transparent ",
           background: "#fff036",
-          borderRadius: "5px",
+          borderRadius: "10px",
         },
       }}
     >
@@ -68,66 +74,42 @@ const Sidebar = () => {
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "5px 0 30px 0",
-              color: colors.grey[100],
-            }}
+            style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
           >
             {!isCollapsed && (
-               <Box
-               display="flex"
-               justifyContent="space-between"
-               alignItems="center"
-               ml="15px"
-             >
-               <img
-                 alt="Logo"
-                 src="../../Icon/coke logo 2.png"
-                 width="50px"
-                 height="50px"
-                 style={{ marginRight: "10px" }}
-               />
+              <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
+                <Typography variant="h6" sx={{ fontFamily: "cursive", fontWeight: "bold", color: colors.grey[100] }}>
+                  ITAMS
+                </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
               </Box>
             )}
           </MenuItem>
+
           {!isCollapsed && (
-            <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../asset/user.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  Patrick
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
-                </Typography>
-              </Box>
+            <Box mb="25px" textAlign="center" >
+              {/* <img
+                alt="profile-user"
+                width="100px"
+                height="100px"
+                src={`../../asset/user.png`}
+                style={{ borderRadius: "50%" }}
+              /> */}
+              <Typography variant="h2" color={colors.grey[100]} fontWeight="bold" sx={{ mt: "25px" }}>
+                Patrick
+              </Typography>
+              {/* <Typography variant="h5" color={colors.greenAccent[500]}>
+                VP Fancy Admin
+              </Typography> */}
             </Box>
           )}
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Typography
-              variant="h3"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            ></Typography>
+
+          <Box paddingLeft={isCollapsed ? undefined : "5%"}>
             <Item
               title="Home"
-              to="/"
+              to="/home"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -147,32 +129,29 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Admin Management"
+              title="User Management"
               to="/admin"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="FAQ Page"
-              to="/faq"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            {/* <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton> */}
+
+            <Divider sx={{ my: 6, borderColor: colors.grey[400] }} />
+
+            {!isCollapsed && (
+              <MenuItem
+                onClick={handleLogout}
+                icon={<ExitToAppIcon />}
+                style={{ color: colors.grey[100] }}
+              >
+                <Typography>Sign Out</Typography>
+              </MenuItem>
+            )}
           </Box>
         </Menu>
       </ProSidebar>
     </Box>
   );
 };
-
 
 export default Sidebar;
