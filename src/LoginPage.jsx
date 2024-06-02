@@ -15,12 +15,13 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.get('http://localhost:8000/accounts/user', {
-         // const response = await axios.get('http://localhost:3000/users' 
+        const response = await axios.get('http://localhost:8000/accounts/user', {
+        //const response = await axios.get('http://localhost:3000/users' 
         params: {
           arrfields: ['id', 'fname', 'lname', 'position', 'eid', 'department', 'email', 'password', 'domain']
         }
-      });
+      }
+    );
 
       const users = response.data;
       const user = users.find(user => user.email === formData.email);
@@ -30,9 +31,8 @@ const Login = () => {
           icon: 'error',
           title: 'Error!',
           text: 'Incorrect email.',
-          customClass: {
-            popup: 'small-popup'
-          }
+          width: '200px',
+          height: '150px'
         });
         return;
       }
@@ -42,23 +42,21 @@ const Login = () => {
           icon: 'error',
           title: 'Error!',
           text: 'Incorrect password.',
-          customClass: {
-            popup: 'small-popup'
-          }
+          width: '200px',
+          height: '150px'
         });
         return;
       }
 
-      localStorage.setItem('is_authenticated', 'true');
+      localStorage.setItem('is_authenticated', true);
       setIsLoggedIn(true);
       Swal.fire({
         icon: 'success',
         title: 'Successfully logged in!',
         timer: 1000,
         showConfirmButton: false,
-        customClass: {
-          popup: 'small-popup'
-        }
+        width: '300px',
+        height: '150px'
       });
 
     } catch (error) {
@@ -67,9 +65,8 @@ const Login = () => {
         icon: 'error',
         title: 'Error!',
         text: 'An error occurred while logging in. Please try again later.',
-        customClass: {
-          popup: 'small-popup'
-        }
+        width: '200px',
+        height: '150px'
       });
     }
   };
