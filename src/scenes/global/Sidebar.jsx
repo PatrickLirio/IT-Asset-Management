@@ -98,7 +98,7 @@ const Sidebar = () => {
                 style={{ borderRadius: "50%" }}
               /> */}
               <Typography variant="h2" color={colors.grey[100]} fontWeight="bold" sx={{ mt: "25px" }}>
-                Patrick
+                Hello!
               </Typography>
               {/* <Typography variant="h5" color={colors.greenAccent[500]}>
                 VP Fancy Admin

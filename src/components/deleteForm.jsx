@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, MenuItem, Select, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Snackbar, Alert, useTheme } from "@mui/material";
+import {
+    Box, MenuItem, Select, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Button, Snackbar, Alert, useTheme
+} from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../theme";
- 
+
 const Delete = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -17,16 +20,15 @@ const Delete = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
- 
+
     const columns = [
-        { field: "id", headerName: "ID", flex: 1 },
         { field: "Model", headerName: "Model", flex: 1 },
         { field: "Serial No.", headerName: "Serial No.", flex: 1 },
         { field: "Category", headerName: "Category", flex: 1 },
         { field: "Make", headerName: "Make", flex: 1 },
         { field: "Asset No.", headerName: "Asset No.", flex: 1 },
         { field: "Baseline Item", headerName: "Baseline Item", flex: 1 },
-        { field: "Employee No.", headerName: "Employee No", flex: 1 },
+        { field: "Employee No.", headerName: "Employee No.", flex: 1 },
         { field: "Position", headerName: "Position", flex: 1 },
         { field: "Assignee", headerName: "Assignee", flex: 1 },
         { field: "Position2", headerName: "Assignee Position", flex: 1 },
@@ -37,14 +39,14 @@ const Delete = () => {
         { field: "Status", headerName: "Status", flex: 1 },
         { field: "Printer IP Address", headerName: "Printer IP Address", flex: 1 },
     ];
- 
+
     useEffect(() => {
         setLoading(true);
- 
+
         axios.get('http://localhost:8000/accounts/asset', {
             params: {
                 assetfields: [
-                    'id', 'Model', '[Serial No.]', 'Category', 'Make', '[Asset No.]', '[Baseline Item]', '[Employee No.]', 'Position', 'Assignee', 'Position2', 'Location', 'Hostname', '[LAN MAC Address]', '[WIFI MAC Address]', 'Status', '[Printer IP Address]'
+                    'Model', '[Serial No.]', 'Category', 'Make', '[Asset No.]', '[Baseline Item]', '[Employee No.]', 'Position', 'Assignee', 'Position2', 'Location', 'Hostname', '[LAN MAC Address]', '[WIFI MAC Address]', 'Status', '[Printer IP Address]'
                 ]
             }
         })
@@ -60,28 +62,28 @@ const Delete = () => {
             setLoading(false);
         });
     }, []);
- 
+
     const handleVisibleColumnsChange = (event) => {
         setVisibleColumns(event.target.value);
     };
- 
+
     const handleRowClick = (params) => {
         setSelectedRow(params.row);
         setDeleteDialogOpen(true);
     };
- 
+
     const handleDeleteDialogClose = () => {
         setDeleteDialogOpen(false);
         setSelectedRow(null);
     };
- 
+
     const handleDeleteConfirm = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.delete(`http://localhost:8000/accounts/delete/${selectedRow.id}`);
+            const response = await axios.delete(`http://localhost:8000/accounts/delete/${selectedRow["Serial No."]}`);
             if (response.status === 200) {
-                setRows(rows.filter(row => row.id !== selectedRow.id));
+                setRows(rows.filter(row => row["Serial No."] !== selectedRow["Serial No."]));
                 setSnackbarMessage("Asset deleted successfully");
                 setSnackbarSeverity("success");
             } else {
@@ -98,14 +100,14 @@ const Delete = () => {
             setSnackbarOpen(true);
         }
     };
- 
+
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setSnackbarOpen(false);
     };
- 
+
     return (
         <Box m="20px">
             <Box
@@ -164,7 +166,6 @@ const Delete = () => {
                     initialState={{
                         columns: {
                             columnVisibilityModel: {
-                                "id": false,
                                 "Category": false,
                                 "Baseline Item": false,
                                 "Position": false,
@@ -183,7 +184,7 @@ const Delete = () => {
                     onRowClick={handleRowClick}
                 />
             </Box>
- 
+
             <Dialog
                 open={deleteDialogOpen}
                 onClose={handleDeleteDialogClose}
@@ -199,7 +200,7 @@ const Delete = () => {
                     <Button onClick={handleDeleteConfirm} color="primary">Delete</Button>
                 </DialogActions>
             </Dialog>
- 
+
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
                     {snackbarMessage}
@@ -208,5 +209,5 @@ const Delete = () => {
         </Box>
     );
 };
- 
+
 export default Delete;

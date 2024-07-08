@@ -2,7 +2,7 @@ const Connection = require('../database/Connection');
 
 module.exports = async (id) => {
     try {
-        const query = `DELETE FROM assets WHERE id = @id`;
+        const query = `DELETE FROM asset WHERE id = @id`;
         
         await Connection(query, { id });
 

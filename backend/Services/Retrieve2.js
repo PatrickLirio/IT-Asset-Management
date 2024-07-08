@@ -7,7 +7,7 @@ module.exports = async (assetfields) => {
         const query = `SELECT ` +
                         `${assetfields} ` +    
                         `FROM ` +  
-                        `dbo.assets`;
+                        `dbo.asset`;
         
 const results = await Connection(query);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, MenuItem, Select, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Snackbar, Alert } from "@mui/material";
+import { Box, useTheme, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Snackbar, Alert } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../theme";
 
@@ -18,14 +18,13 @@ const Update = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
     const columns = [
-        { field: "id", headerName: "ID", flex: 1 },
         { field: "Model", headerName: "Model", flex: 1 },
         { field: "Serial No.", headerName: "Serial No.", flex: 1 },
         { field: "Category", headerName: "Category", flex: 1 },
         { field: "Make", headerName: "Make", flex: 1 },
         { field: "Asset No.", headerName: "Asset No.", flex: 1 },
         { field: "Baseline Item", headerName: "Baseline Item", flex: 1 },
-        { field: "Employee No.", headerName: "Employee No", flex: 1 },
+        { field: "Employee No.", headerName: "Employee No.", flex: 1 },
         { field: "Position", headerName: "Position", flex: 1 },
         { field: "Assignee", headerName: "Assignee", flex: 1 },
         { field: "Position2", headerName: "Assignee Position", flex: 1 },
@@ -43,7 +42,7 @@ const Update = () => {
         axios.get('http://localhost:8000/accounts/asset', {
             params: {
                 assetfields: [
-                    'id', 'Model', '[Serial No.]', 'Category', 'Make', '[Asset No.]', '[Baseline Item]', '[Employee No.]', 'Position', 'Assignee', 'Position2', 'Location', 'Hostname', '[LAN MAC Address]', '[WIFI MAC Address]', 'Status', '[Printer IP Address]'
+                    'Model', '[Serial No.]', 'Category', 'Make', '[Asset No.]', '[Baseline Item]', '[Employee No.]', 'Position', 'Assignee', 'Position2', 'Location', 'Hostname', '[LAN MAC Address]', '[WIFI MAC Address]', 'Status', '[Printer IP Address]'
                 ]
             }
         })
@@ -77,31 +76,23 @@ const Update = () => {
     const handleDialogSave = async () => {
         if (!selectedRow) return;
 
-        const {
-            id, Model, "Serial No.": serialNo, Category, Make, "Asset No.": assetNo,
-            "Baseline Item": baselineItem, "Employee No.": employeeNo, Position, Assignee,
-            Position2, Location, Hostname, "LAN MAC Address": lanMacAddress,
-            "WIFI MAC Address": wifiMacAddress, Status, "Printer IP Address": printerIpAddress
-        } = selectedRow;
-
         const updatedData = {
-            id,
-            NewModel: Model,
-            'New[Serial No.]': serialNo,
-            NewCategory: Category,
-            NewMake: Make,
-            'New[Asset No.]': assetNo,
-            'New[Baseline Item]': baselineItem,
-            'New[Employee No.]': employeeNo,
-            NewPosition: Position,
-            NewAssignee: Assignee,
-            NewPosition2: Position2,
-            NewLocation: Location,
-            NewHostname: Hostname,
-            'New[LAN MAC Address]': lanMacAddress,
-            'New[WIFI MAC Address]': wifiMacAddress,
-            NewStatus: Status,
-            'New[Printer IP Address]': printerIpAddress,
+            NewModel: selectedRow.Model,
+            'New[Serial No.]': selectedRow['Serial No.'],
+            NewCategory: selectedRow.Category,
+            NewMake: selectedRow.Make,
+            'New[Asset No.]': selectedRow['Asset No.'],
+            'New[Baseline Item]': selectedRow['Baseline Item'],
+            'New[Employee No.]': selectedRow['Employee No.'],
+            NewPosition: selectedRow.Position,
+            NewAssignee: selectedRow.Assignee,
+            NewPosition2: selectedRow.Position2,
+            NewLocation: selectedRow.Location,
+            NewHostname: selectedRow.Hostname,
+            'New[LAN MAC Address]': selectedRow['LAN MAC Address'],
+            'New[WIFI MAC Address]': selectedRow['WIFI MAC Address'],
+            NewStatus: selectedRow.Status,
+            'New[Printer IP Address]': selectedRow['Printer IP Address']
         };
 
         setLoading(true);
@@ -111,7 +102,7 @@ const Update = () => {
             const response = await axios.post('http://localhost:8000/accounts/update', updatedData);
             console.log("Response data:", response.data);
 
-            setRows(prevRows => prevRows.map(row => row.id === id ? { ...row, ...updatedData } : row));
+            setRows(prevRows => prevRows.map(row => row['Serial No.'] === selectedRow['Serial No.'] ? { ...row, ...selectedRow } : row));
 
             setSnackbarMessage("Asset data updated successfully");
             setSnackbarSeverity("success");
@@ -200,7 +191,6 @@ const Update = () => {
                     initialState={{
                         columns: {
                             columnVisibilityModel: {
-                                "id": false,
                                 "Category": false,
                                 "Baseline Item": false,
                                 "Position": false,
@@ -216,6 +206,7 @@ const Update = () => {
                             paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
+                    getRowId={(row) => row['Serial No.']}
                     onRowClick={handleRowClick}
                 />
             </Box>

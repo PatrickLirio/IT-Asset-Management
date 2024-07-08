@@ -15,12 +15,12 @@ const Login = () => {
     e.preventDefault();
 
     try {
-        const response = await axios.get('http://localhost:8000/accounts/user', {
-        //const response = await axios.get('http://localhost:3000/users' 
-        params: {
-          arrfields: ['id', 'fname', 'lname', 'position', 'eid', 'department', 'email', 'password', 'domain']
-        }
-      }
+      // const response = await axios.get('http://localhost:8000/accounts/user', {
+        const response = await axios.get('http://localhost:3000/users' 
+      //   params: {
+      //     arrfields: ['id', 'fname', 'lname', 'position', 'eid', 'department', 'email', 'password', 'domain']
+      //   }
+      // }
     );
 
       const users = response.data;
@@ -68,6 +68,7 @@ const Login = () => {
         width: '200px',
         height: '150px'
       });
+
     }
   };
 

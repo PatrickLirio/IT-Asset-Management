@@ -8,7 +8,7 @@ const createAsset = async (model, serialNo, category, make, assetNo, baselineIte
 
     try {
         const query = `
-            INSERT INTO assets (
+            INSERT INTO asset (
                 model, [Serial No.], category, make, [Asset No.], [Baseline Item], [Employee No.], position, assignee, position2, location, hostname, [LAN MAC Address], [WIFI MAC Address], status, [Printer IP Address]
             ) VALUES (
                 @model, @serialNo, @category, @make, @assetNo, @baselineItem, @employeeNo, @position, @assignee, @position2, @location, @hostname, @lanMacAddress, @wifiMacAddress, @status, @printerIpAddress

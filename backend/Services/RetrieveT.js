@@ -2,7 +2,7 @@ const Connection = require('../database/Connection');
 
 module.exports = async () => {
     try {
-        const query = `SELECT COUNT(*) AS totalAssets FROM dbo.assets`;
+        const query = `SELECT COUNT(*) AS totalAssets FROM dbo.asset`;
 
         const results = await Connection(query);
 

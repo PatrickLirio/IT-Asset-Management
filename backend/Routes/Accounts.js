@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
+// const fs = require('fs');
 const sql = require('mssql');
 
 const createUserAsset = require('../Services/Create');
@@ -163,68 +163,41 @@ router.post('/update', async (req, res) => {
     try {
         // Extract new data from the request body
         const {
-            NewModel,
-            'New[Serial No.]': NewSerialNo,
-            NewCategory,
-            NewMake,
-            'New[Asset No.]': NewAssetNo,
-            'New[Baseline Item]': NewBaselineItem,
-            'New[Employee No.]': NewEmployeeNo,
-            NewPosition,
-            NewAssignee,
-            NewPosition2,
-            NewLocation,
-            NewHostname,
-            'New[LAN MAC Address]': NewLANMACAddress,
-            'New[WIFI MAC Address]': NewWIFIMACAddress,
-            NewStatus,
-            'New[Printer IP Address]': NewPrinterIPAddress
+            NewModel: Model,
+            'New[Serial No.]': SerialNo,
+            NewCategory: Category,
+            NewMake: Make,
+            'New[Asset No.]': AssetNo,
+            'New[Baseline Item]': BaselineItem,
+            'New[Employee No]': EmployeeNo,
+            NewPosition: Position,
+            NewAssignee: Assignee,
+            NewPosition2: Position2,
+            NewLocation: Location,
+            NewHostname: Hostname,
+            'New[LAN MAC Address]': LANMACAddress,
+            'New[WIFI MAC Address]': WIFIMACAddress,
+            NewStatus: Status,
+            'New[Printer IP Address]': PrinterIPAddress
         } = req.body;
 
-        // Fetch the existing ID from the database or any other source
-        // For demonstration, let's assume it's obtained from req.body as well
-        const { id } = req.body;
-
-        // Call UpdateServices with the existing ID and new data
-        const results = await UpdateServices(
-            id,
-            NewModel,
-            NewSerialNo,
-            NewCategory,
-            NewMake,
-            NewAssetNo,
-            NewBaselineItem,
-            NewEmployeeNo,
-            NewPosition,
-            NewAssignee,
-            NewPosition2,
-            NewLocation,
-            NewHostname,
-            NewLANMACAddress,
-            NewWIFIMACAddress,
-            NewStatus,
-            NewPrinterIPAddress
+        const result = await UpdateServices(
+            Model, SerialNo, Category, Make, AssetNo, BaselineItem,
+            EmployeeNo, Position, Assignee, Position2, Location,
+            Hostname, LANMACAddress, WIFIMACAddress, Status, PrinterIPAddress
         );
 
-        // Send response based on results
-        if (results) {
-            res.status(200).send({
-                status: results,
-                message: "Successfully Updated!"
-            });
+        if (result) {
+            res.status(200).json({ message: 'Asset updated successfully' });
         } else {
-            res.status(500).send({
-                status: results,
-                message: "Not Updated!"
-            });
+            res.status(500).json({ message: 'Failed to update asset' });
         }
-    } catch (error) {
-        console.error('Error updating asset:', error);
-        res.status(500).send({
-            message: "An error occurred while updating the asset."
-        });
+    } catch (err) {
+        console.error("Error in /update endpoint:", err);
+        res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 //users
 router.post('/update/users', async (req, res) => {

@@ -12,46 +12,48 @@ const Dashboard = () => {
   // Define state to manage the view
   const [view, setView] = useState("View Assets");
 
-  return (
-    <Box mb="10px" padding="10px">
+  // Function to handle view change
+  const handleViewChange = (newView) => {
+    setView(newView);
+  };
 
+  return (
+    <Box mb="10px" p="10px">
       {/* Buttons */}
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="center" mb={2}>
         <Stack direction="row" spacing={2}>
-          {/* View Assets button */}
           <Button 
-              variant="contained"
-              size="large" 
-              startIcon={<AddIcon />} 
-              onClick={() => setView("View Assets")}
-              sx={{ 
-                  backgroundColor: view === "View Assets" ? colors.redAccent[700] : colors.redAccent[500],
-                  width: '200px',
-              }}
-          > 
-              View Assets
+            variant="contained"
+            size="large" 
+            startIcon={<AddIcon />} 
+            onClick={() => handleViewChange("View Assets")}
+            sx={{ 
+                backgroundColor: view === "View Assets" ? colors.redAccent[700] : colors.redAccent[500],
+                width: '200px',
+            }}
+          >
+            View Assets
           </Button>
 
-          {/* Assigned Assets button */}
           <Button 
-              variant="contained" 
-              size="large"
-              onClick={() => setView("Assigned Assets")} 
-              sx={{ 
-                  backgroundColor: view === "Assigned Assets" ? colors.redAccent[700] : colors.redAccent[500],
-                  width: '200px',
-              }}
+            variant="contained" 
+            size="large"
+            onClick={() => handleViewChange("Assigned Assets")}
+            sx={{ 
+                backgroundColor: view === "Assigned Assets" ? colors.redAccent[700] : colors.redAccent[500],
+                width: '200px',
+            }}
           >
-              Assigned Assets
+            Assigned Assets
           </Button>
         </Stack>
       </Box>
-      
+
       {/* Display the selected view */}
-      <Box mt={2}>
-        {view === "View Assets" ? <ViewAsset /> : view === "Assigned Assets" ? <Table /> : null}
+      <Box>
+        {view === "View Assets" && <ViewAsset />}
+        {view === "Assigned Assets" && <Table />}
       </Box>
-      
     </Box>
   );
 };
